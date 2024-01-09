@@ -8,10 +8,14 @@ import org.apache.catalina.webresources.DirResourceSet;
 import org.apache.catalina.webresources.StandardRoot;
 
 import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Application {
 
-    public static void main(String[] args) throws LifecycleException {
+    public static void main(String[] args) throws LifecycleException, SQLException {
 
         Tomcat tomcat = new Tomcat();
 
@@ -33,6 +37,28 @@ public class Application {
         tomcat.start();
         tomcat.getServer().await();
 
+        Connection conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/messenger","root","password");
+
+        try {
+            Statement st= conn.createStatement();
+            st.executeUpdate("CREATE SCHEMA IF NOT EXISTS `messenger`;\n" +
+                    "\n" +
+                    "CREATE TABLE IF NOT EXISTS `messenger`.`users` (\n" +
+                    "  `id` INT NOT NULL AUTO_INCREMENT,\n" +
+                    "  `username` VARCHAR(45) NOT NULL,\n" +
+                    "  `password` VARCHAR(45) NOT NULL,\n" +
+                    "  PRIMARY KEY (`id`));\n" +
+                    "\n" +
+                    "CREATE TABLE IF NOT EXISTS `messenger`.`messages` (\n" +
+                    "  `id` INT NOT NULL AUTO_INCREMENT,\n" +
+                    "  `user` VARCHAR(45) NOT NULL,\n" +
+                    "  `message` VARCHAR(45) NOT NULL,\n" +
+                    "  PRIMARY KEY (`id`));\n" +
+                    "\n");
+            st.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

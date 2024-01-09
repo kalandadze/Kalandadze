@@ -35,10 +35,12 @@ public class Message {
         this.message = message;
     }
     public void store() throws SQLException {
-        PreparedStatement ps= conn.prepareStatement("insert into messages(username,password) values(?,?)");
-        ps.setString(1,user.getUsername());
-        ps.setString(2,message);
-        ps.executeUpdate();
-        ps.close();
+        if (user.exists()) {
+            PreparedStatement ps = conn.prepareStatement("insert into messages(user,message) values(?,?)");
+            ps.setString(1, user.getUsername());
+            ps.setString(2, message);
+            ps.executeUpdate();
+            ps.close();
+        }
     }
 }

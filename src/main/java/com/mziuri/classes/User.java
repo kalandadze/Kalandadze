@@ -1,6 +1,7 @@
 package com.mziuri.classes;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class User {
@@ -8,22 +9,22 @@ public class User {
 
     private String username;
     private String password;
-    private List<Message> messages;
 
     public User(String username, String password) throws SQLException {
         this.username = username;
         this.password = password;
-        findMessages();
     }
 
-    private void findMessages() throws SQLException {
+    public List<Message> findMessages() throws SQLException {
+        List<Message> messages=new ArrayList<>();
         PreparedStatement ps= conn.prepareStatement("select message from messages where user=?");
         ps.setString(1,username);
         ResultSet rs=ps.executeQuery();
-        ps.close();
         while (rs.next()){
             messages.add(new Message(this,rs.getString("message")));
         }
+        ps.close();
+        return messages;
     }
 
     public void saveUser() throws SQLException {
@@ -36,10 +37,9 @@ public class User {
         }
     }
     public boolean exists() throws SQLException {
-        PreparedStatement ps= conn.prepareStatement("select*from messages where user=?");
+        PreparedStatement ps= conn.prepareStatement("select*from users where username=?");
         ps.setString(1,username);
         ResultSet rs=ps.executeQuery();
-        ps.close();
         return rs.next();
     }
 
@@ -57,13 +57,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public List<Message> getMessages() {
-        return messages;
-    }
-
-    public void setMessages(List<Message> messages) {
-        this.messages = messages;
     }
 }

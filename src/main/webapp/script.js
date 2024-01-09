@@ -24,20 +24,40 @@ function clearList(){
     }
 }
 
-function registerUser(){
-    if(document.getElementById("username").value==""||document.getElementById("password").value==""){
+async function registerUser(){
+    var user=document.getElementById("username").value;
+    var password=document.getElementById("password").value;
+    if(user==""||password==""){
         alert("Username and Password is Required");
         return;
     }
+    var url = "http://localhost:8989/messenger/user?username="+user+"&password="+password;
+    var response = await fetch(url, { method: "POST" });
+    if(response.status===403){
+        alert("user already exists")
+    }else{
+        alert("user succesfully registered")
+    }
+
     document.getElementById("username").value="";
     document.getElementById("password").value="";
 }
 
-function sendMessage(){
-    if(document.getElementById("user").value==""||document.getElementById("message").value==""){
+async function sendMessage(){
+    var user=document.getElementById("user").value;
+    var message=document.getElementById("message").value;
+    if(user==""||message==""){
         alert("Target user and Message is Required");
         return;
     }
+    var url = "http://localhost:8989/messenger/message?username="+user+"&message="+message;
+    var response = await fetch(url, { method: "POST" });
+    if(response.ok){
+        alert("message succesfully sent")
+    }else if(response.status===403){
+        alert(response.statusText);
+    }
+
     document.getElementById("user").value="";
     document.getElementById("message").value="";
 }
