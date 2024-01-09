@@ -1,0 +1,61 @@
+body {
+    margin: 0;
+    
+    background-color: #f0ece2;
+    color: black;
+    font-family:'Courier New', Courier, monospace;
+}
+#send, #register{
+    display: inline-block;
+    width: 50%;
+    padding: 4px 1%;
+    margin: 0;
+    flex: 1;
+}
+#top{
+    display: flex;
+}
+fieldset{
+    display: grid;
+    border: 1px solid #c7b198;
+}
+fieldset label{
+    padding: 1vh 0;
+}
+#receive{
+    padding: 4px 1%;
+}
+
+input[type="email"],input[type="text"],input[type="password"]{
+    background-color: #dfd3c3;
+    border: 1px solid #c7b19883;
+    border-radius: .25rem;
+    width: 100%;
+}
+
+input[type="button"] {
+  background-color: #dfd3c3;
+  border: 1px solid #c7b19883;
+  border-radius: .25rem;
+  color: black;
+  cursor: pointer;
+  transition: all 250ms;
+  height: 27px;
+  font-family:'Courier New', Courier, monospace;
+  margin-top: 1.5vh;
+}
+
+input[type="button"]:hover {
+  background-color: #c7b198;
+  transform: translateY(-1px);
+}
+
+input[type="button"]:active {
+  background-color: #dfd3c3;
+  transform: translateY(0);
+}
+
+
+
+
+

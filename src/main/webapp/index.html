@@ -2,9 +2,47 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
+		<script src="script.js"></script>
+		<link rel="stylesheet" type="text/css" href="index.css">
+		<link rel="stylesheet" type="text/css" href="normalize.css">
         <title>Messenger</title>
 	</head>
 	<body>
 		<!--	WEBSITE BODY	-->
+		<div id="top">
+			<div id="send">
+				<form>
+					<fieldset>
+						<legend>Send Message</legend>
+						<label for="user">Target user: <br><input id="user" name="user" type="text" required /></label>
+						<label for="message">Message: <br><input id="message" name="message" type="text" required /></label>
+						<input type="button" onclick="sendMessage()" value="Send" />
+					</fieldset>
+				</form>
+			</div>
+
+			<div id="register">
+				<form>
+					<fieldset>
+						<legend>Register User</legend>
+						<label for="username">Username: <br><input id="username" name="username" type="text" required /></label>
+						<label for="password">password: <br><input id="password" name="password" type="password" required /></label>
+						<input type="button" onclick="registerUser()" value="Register" />
+					</fieldset>
+				</form>
+			</div>
+		</div>
+
+		<div id="receive">
+			<form>
+				<fieldset>
+					<legend>inbox</legend>
+					<label for="loginUsername">Username: <br><input id="loginUsername" name="loginUsername" type="text" required /></label>
+					<label for="loginPassword">Password: <br><input id="loginPassword" name="loginPassword" type="password" required /></label>
+					<input type="button" onclick="findMessages()" value="Check Inbox">
+					<ul id="messages"></ul>
+				</fieldset>
+			</form>
+		</div>
 	</body>
 </html>
