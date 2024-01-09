@@ -1,20 +1,31 @@
-function findMessages() {
+async function findMessages() {
     clearList();
-    if(document.getElementById("loginUsername").value==""||document.getElementById("loginPassword").value==""){
+    user=document.getElementById("loginUsername").value;
+    password=document.getElementById("loginPassword").value;
+    if(user==""||password==""){
         alert("Username and Password is Required");
         return;
     }
-    var message="sdasd";
-    addMessage(message);
+    var url = "http://localhost:8989/messenger/message?username="+user+"&password="+password;
+    var response = await fetch(url, { method: "GET" });
+    if(response.status===403){
+        alert("user doesn't exist");
+    }
+    var message=await response.text();
+    const messages=message.split("\n");
+    addMessage(messages);
     document.getElementById("loginUsername").value="";
     document.getElementById("loginPassword").value=""
 }
 
-function addMessage(message){
-    var ul = document.getElementById("messages");
-    var li = document.createElement("li");
-    li.appendChild(document.createTextNode(message));
-    ul.appendChild(li);
+function addMessage(messages){
+    for(var i=0;i<messages.length-1;i++){
+        var message=messages[i];
+        var ul = document.getElementById("messages");
+        var li = document.createElement("li");
+        li.appendChild(document.createTextNode(message));
+        ul.appendChild(li);
+    }
 }
 
 function clearList(){
@@ -46,6 +57,10 @@ async function registerUser(){
 async function sendMessage(){
     var user=document.getElementById("user").value;
     var message=document.getElementById("message").value;
+    if(message.includes("\\n")){
+        alert("message can't contain new line or \\n")
+        return;
+    }
     if(user==""||message==""){
         alert("Target user and Message is Required");
         return;
@@ -55,7 +70,7 @@ async function sendMessage(){
     if(response.ok){
         alert("message succesfully sent")
     }else if(response.status===403){
-        alert(response.statusText);
+        alert("user doesn't exist");
     }
 
     document.getElementById("user").value="";

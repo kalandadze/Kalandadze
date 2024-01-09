@@ -3,6 +3,7 @@ package com.mziuri.classes;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class User {
     Connection conn= DriverManager.getConnection("jdbc:mysql://localhost:3306/messenger","root","password");
@@ -41,6 +42,16 @@ public class User {
         ps.setString(1,username);
         ResultSet rs=ps.executeQuery();
         return rs.next();
+    }
+    public boolean isValid() throws SQLException {
+        if (exists()) {
+            PreparedStatement ps = conn.prepareStatement("select password from users where username=?");
+            ps.setString(1, username);
+            ResultSet rs = ps.executeQuery();
+            rs.next();
+            return Objects.equals(rs.getString("password"), password);
+        }
+        return false;
     }
 
     public String getUsername() {

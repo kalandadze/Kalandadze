@@ -27,7 +27,7 @@ public class MessageServlet extends HttpServlet {
         String password=req.getParameter("password");
         try {
             User user=new User(username,password);
-            if (!user.exists()){
+            if (!user.isValid()){
                 resp.sendError(403);
             }else {
                 StringBuilder messages=new StringBuilder();
@@ -46,9 +46,7 @@ public class MessageServlet extends HttpServlet {
         try {
             User user=new User(req.getParameter("username"),"");
             String message=req.getParameter("message");
-            if (message.contains("\n")||message.contains("\\n")){
-                resp.sendError(403,"new line");
-            } else if (!user.exists()) {
+            if (!user.exists()) {
                 resp.sendError(403, "user");
             } else {
                 try {
@@ -60,6 +58,8 @@ public class MessageServlet extends HttpServlet {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        } catch (IllegalArgumentException e){
+            resp.sendError(402);
         }
     }
 }
